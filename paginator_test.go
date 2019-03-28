@@ -23,9 +23,9 @@ func TestFieldsRequired(t *testing.T) {
 		from   int
 		to     int
 	}{
-		{&first, nil, "", "", 0, totalCount, 20, 0, 0, 19},
-		{nil, &last, "", "", 0, totalCount, 20, 66, 67, 87},
-		{&first, nil, EncodeCursor("cursor", 9), "", 0, totalCount, 20, 9, 10, 29},
+		{&first, nil, "", "", 0, totalCount, first, 0, 0, 19},
+		{nil, &last, "", "", 0, totalCount, last, 66, 67, 87},
+		{&first, nil, EncodeCursor("cursor", 9), "", 0, totalCount, last, 9, 10, 29},
 	}
 
 	for i, test := range tests {
