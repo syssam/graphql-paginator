@@ -47,9 +47,9 @@ func NewPaginator(cursorPrefix string, first *int, last *int, after *string, bef
 	}
 
 	if after != nil && *after != "" {
-		p.from, err = DecodeCursor(p.cursorPrefix, *before)
+		p.from, err = DecodeCursor(p.cursorPrefix, *after)
 		if err != nil {
-			return nil, errors.New("`" + *before + "` does not appear to be a valid cursor.")
+			return nil, errors.New("`" + *after + "` does not appear to be a valid cursor.")
 		}
 		p.from++
 		p.from = Min(p.from, total-1)

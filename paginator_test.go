@@ -6,39 +6,11 @@ import (
 
 func TestFieldsRequired(t *testing.T) {
 	/*
-		case 1:
-		$paginator = new Paginator($first: 100, $last: null, $after: null, $before: null, $total: 1000);
-		$result: select * from testing limit 100
-
-		case 2:
-		$paginator = new Paginator($first: 0, $last: 100, $after: null, $before: null, $total: 1000);
-		$result: select * from testing limit 900, 1000
-
-		case 3
-		$paginator = new Paginator($first: 100, $last: null, $after: 100, $before: null, $total: 1000);
-		$result: select * from testing limit 101, 201
-
-		case 4
-		$paginator = new Paginator($first: null, $last: 100, $after: null, $before: 100, $total: 1000);
-		$result: select * from testing limit 0, 99
-
-		case 5
-		$paginator = new Paginator($first: 100, $last: null, $after: 50, $before: 80, $total: 1000);
-		$result: select * from testing limit 51, 79
-
-		case 6
-		$paginator = new Paginator($first: 100, $last: null, $after: 50, $before: 180, $total: 1000);
-		$result: select * from testing limit 51, 151
-
-		case 7
-		$paginator = new Paginator($first: null, $last: 100, $after: 50, $before: 80, $total: 1000);
-		$result: select * from testing limit 819, 919
-
-		case 8
-		$paginator = new Paginator($first: null, $last: 100, $after: 880, $before: 80, $total: 1000);
-		$result: select * from testing limit 880, 919
+		https://graphql.org/swapi-graphql
 	*/
-	number100 := 100
+	totalCount := 87
+	first := 20
+	last := 20
 	var tests = []struct {
 		first  *int
 		last   *int
@@ -51,9 +23,9 @@ func TestFieldsRequired(t *testing.T) {
 		from   int
 		to     int
 	}{
-		{&number100, nil, "", "", 0, 1000, 100, 0, 0, 99},
-		{nil, &number100, "", "", 0, 1000, 100, 900, 900, 1000},
-		{&number100, nil, EncodeCursor("cursor", 100), "", 0, 1000, 100, 0, 0, 99},
+		{&first, nil, "", "", 0, totalCount, 20, 0, 0, 19},
+		{nil, &last, "", "", 0, totalCount, 20, 66, 67, 87},
+		{&first, nil, EncodeCursor("cursor", 9), "", 0, totalCount, 20, 9, 10, 29},
 	}
 
 	for i, test := range tests {
