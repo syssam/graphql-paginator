@@ -52,6 +52,8 @@ func TestFieldsRequired(t *testing.T) {
 		to     int
 	}{
 		{&number100, nil, "", "", 0, 1000, 100, 0, 0, 99},
+		{nil, &number100, "", "", 0, 1000, 100, 900, 900, 1000},
+		{&number100, nil, EncodeCursor("cursor", 100), "", 0, 1000, 100, 0, 0, 99},
 	}
 
 	for i, test := range tests {
