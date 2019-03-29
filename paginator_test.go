@@ -7,6 +7,7 @@ import (
 func TestFieldsRequired(t *testing.T) {
 	/*
 		https://graphql.org/swapi-graphql
+		allPeople
 	*/
 	totalCount := 87
 	first := 20
@@ -25,12 +26,12 @@ func TestFieldsRequired(t *testing.T) {
 	}{
 		{&first, nil, "", "", 0, totalCount, first, 0, 0, 19},
 		{nil, &last, "", "", 0, totalCount, last, 66, 67, 87},
-		{&first, nil, EncodeCursor("cursor", 9), "", 0, totalCount, first, 9, 10, 29},
-		{nil, &last, "", EncodeCursor("cursor", 9), 0, totalCount, last, 9, 10, 29},
-		{&first, nil, EncodeCursor("cursor", 9), EncodeCursor("cursor", 9), 0, totalCount, first, 9, 10, 29},
-		{&first, nil, EncodeCursor("cursor", 9), EncodeCursor("cursor", 9), 0, totalCount, first, 9, 10, 29},
-		{&last, nil, EncodeCursor("cursor", 9), EncodeCursor("cursor", 9), 0, totalCount, last, 9, 10, 29},
-		{&last, nil, EncodeCursor("cursor", 9), EncodeCursor("cursor", 9), 0, totalCount, last, 9, 10, 29},
+		{&first, nil, EncodeCursor("cursor", 9), "", 0, totalCount, 20, 10, 10, 29},
+		{nil, &last, "", EncodeCursor("cursor", 50), 0, totalCount, 20, 30, 30, 49},
+		{&first, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 15), 0, totalCount, 11, 9, 11, 14},
+		{&first, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 50), 0, totalCount, 20, 11, 11, 30},
+		{&last, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 15), 0, totalCount, 4, 11, 11, 14},
+		{&last, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 50), 0, totalCount, 20, 30, 30, 49},
 	}
 
 	for i, test := range tests {
