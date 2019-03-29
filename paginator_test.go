@@ -25,7 +25,12 @@ func TestFieldsRequired(t *testing.T) {
 	}{
 		{&first, nil, "", "", 0, totalCount, first, 0, 0, 19},
 		{nil, &last, "", "", 0, totalCount, last, 66, 67, 87},
-		{&first, nil, EncodeCursor("cursor", 9), "", 0, totalCount, last, 9, 10, 29},
+		{&first, nil, EncodeCursor("cursor", 9), "", 0, totalCount, first, 9, 10, 29},
+		{nil, &last, "", EncodeCursor("cursor", 9), 0, totalCount, last, 9, 10, 29},
+		{&first, nil, EncodeCursor("cursor", 9), EncodeCursor("cursor", 9), 0, totalCount, first, 9, 10, 29},
+		{&first, nil, EncodeCursor("cursor", 9), EncodeCursor("cursor", 9), 0, totalCount, first, 9, 10, 29},
+		{&last, nil, EncodeCursor("cursor", 9), EncodeCursor("cursor", 9), 0, totalCount, last, 9, 10, 29},
+		{&last, nil, EncodeCursor("cursor", 9), EncodeCursor("cursor", 9), 0, totalCount, last, 9, 10, 29},
 	}
 
 	for i, test := range tests {
