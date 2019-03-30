@@ -128,6 +128,16 @@ func (p Paginator) HasPreviousPage() bool {
 	return false
 }
 
+func (p Paginator) StartCursor() *string {
+	cursor := EncodeCursor(p.cursorPrefix, p.from)
+	return &cursor
+}
+
+func (p Paginator) EndCursor() *string {
+	cursor := EncodeCursor(p.cursorPrefix, p.to)
+	return &cursor
+}
+
 // EncodeCursor the cursot position in base64
 func EncodeCursor(cursorPrefix string, index int) string {
 	return base64.StdEncoding.EncodeToString([]byte(cursorPrefix + strconv.Itoa(index)))
