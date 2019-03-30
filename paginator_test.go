@@ -2,9 +2,20 @@ package paginator
 
 import (
 	"testing"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-func TestFieldsRequired(t *testing.T) {
+type Test struct {
+	gorm.Model
+	Name      string
+	FirstName string
+	LastName  string
+	Email     string
+}
+
+func TestPage(t *testing.T) {
 	/*
 		https://graphql.org/swapi-graphql
 		allPeople
@@ -25,31 +36,31 @@ func TestFieldsRequired(t *testing.T) {
 		to     int
 	}{
 		{&first, nil, "", "", 0, totalCount, first, 0, 0, 19},
-		{nil, &last, "", "", 0, totalCount, last, 66, 67, 87},
+		{nil, &last, "", "", 0, totalCount, last, 67, 67, 86},
 		{&first, nil, EncodeCursor("cursor", 9), "", 0, totalCount, 20, 10, 10, 29},
 		{nil, &last, "", EncodeCursor("cursor", 50), 0, totalCount, 20, 30, 30, 49},
-		{&first, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 15), 0, totalCount, 11, 9, 11, 14},
+		{&first, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 15), 0, totalCount, 4, 11, 11, 14},
 		{&first, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 50), 0, totalCount, 20, 11, 11, 30},
-		{&last, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 15), 0, totalCount, 4, 11, 11, 14},
-		{&last, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 50), 0, totalCount, 20, 30, 30, 49},
+		{nil, &last, EncodeCursor("cursor", 10), EncodeCursor("cursor", 15), 0, totalCount, 4, 11, 11, 14},
+		{nil, &last, EncodeCursor("cursor", 10), EncodeCursor("cursor", 50), 0, totalCount, 20, 30, 30, 49},
 	}
 
 	for i, test := range tests {
 		paginator, err := NewPaginator("cursor", test.first, test.last, &test.after, &test.before, &test.skip, test.total)
 		if err != nil {
-			t.Errorf("Got Error on NewPaginator(%q): %s", test, err)
+			t.Errorf("Got Error on NewPaginator(%v): %s", test, err)
 		} else {
 			if paginator.Limit() != test.limit {
-				t.Errorf("Got Error on case %d limit doest not match %d : %d", i, test.limit, paginator.Limit())
+				t.Errorf("Got Error on case %d Limit doest not match %d : %d", i, test.limit, paginator.Limit())
 			}
 			if paginator.Offset() != test.offset {
-				t.Errorf("Got Error on case %d offset doest not match %d : %d", i, test.offset, paginator.Offset())
+				t.Errorf("Got Error on case %d Offset doest not match %d : %d", i, test.offset, paginator.Offset())
 			}
 			if paginator.From() != test.from {
-				t.Errorf("Got Error on case %d from doest not match %d : %d", i, test.from, paginator.From())
+				t.Errorf("Got Error on case %d From doest not match %d : %d", i, test.from, paginator.From())
 			}
 			if paginator.To() != test.to {
-				t.Errorf("Got Error on case %d to doest not match %d : %d", i, test.to, paginator.To())
+				t.Errorf("Got Error on case %d To doest not match %d : %d", i, test.to, paginator.To())
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package paginator
 import (
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -58,28 +59,43 @@ func NewPaginator(cursorPrefix string, first *int, last *int, after *string, bef
 	if before != nil && *before != "" {
 		p.to, err = DecodeCursor(p.cursorPrefix, *before)
 		if err != nil {
+			fmt.Println(err)
 			return nil, errors.New("`" + *before + "` does not appear to be a valid cursor.")
 		}
 		p.to--
-		p.to = Min(p.to, 0)
+		p.to = Max(p.to, 0)
 	}
 
 	if first != nil {
-		p.to = Min(p.from+*first, total-1)
+		to := Max(p.from+*first-1, 0)
+		p.to = Min(to, p.to)
+
+		if (before == nil || *before == "") && (after == nil || *after == "") {
+			p.from = 0
+			p.to = Max(*first-1, 0)
+		} else if after != nil && *after != "" && (before == nil || *before == "") {
+			p.to = Min(p.from+*first-1, total-1)
+		}
 	}
 
 	if last != nil {
-		p.from = Max(p.to-*last, 0)
+		from := Max(p.to-*last+1, 0)
+		p.from = Max(from, p.from)
+
+		if (before == nil || *before == "") && (after == nil || *after == "") {
+			p.from = Max(total-*last, 0)
+			p.to = Max(total-1, 0)
+		}
 	}
 
-	if skip != nil {
-		p.from = p.from - *skip
-	}
+	/*
+		if skip != nil {
+			p.from = p.from + *skip
+		}
+	*/
 
-	p.offset = p.from
-	if p.to >= p.from {
-		p.limit = p.to - p.from
-	}
+	p.limit = Max(p.to-p.from+1, 0)
+	p.offset = Max(p.from, 0)
 
 	return &p, nil
 }
