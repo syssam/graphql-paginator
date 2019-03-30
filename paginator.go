@@ -88,11 +88,9 @@ func NewPaginator(cursorPrefix string, first *int, last *int, after *string, bef
 		}
 	}
 
-	/*
-		if skip != nil {
-			p.from = p.from + *skip
-		}
-	*/
+	if skip != nil {
+		p.from = p.from + *skip
+	}
 
 	p.limit = Max(p.to-p.from+1, 0)
 	p.offset = Max(p.from, 0)
