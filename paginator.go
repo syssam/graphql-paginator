@@ -115,7 +115,7 @@ func (p Paginator) Offset() int {
 }
 
 func (p Paginator) HasNextPage() bool {
-	if p.total > p.to {
+	if p.to == 0 || p.total-1 > p.to {
 		return true
 	}
 	return false
