@@ -54,6 +54,8 @@ func NewPaginator(cursorPrefix string, first *int, last *int, after *string, bef
 		}
 		p.from++
 		p.from = Min(p.from, total-1)
+	} else {
+		p.from = 0
 	}
 
 	if before != nil && *before != "" {
@@ -64,28 +66,18 @@ func NewPaginator(cursorPrefix string, first *int, last *int, after *string, bef
 		}
 		p.to--
 		p.to = Max(p.to, 0)
+	} else {
+		p.to = total - 1
 	}
 
 	if first != nil {
 		to := Max(p.from+*first-1, 0)
 		p.to = Min(to, p.to)
-
-		if (before == nil || *before == "") && (after == nil || *after == "") {
-			p.from = 0
-			p.to = Max(*first-1, 0)
-		} else if after != nil && *after != "" && (before == nil || *before == "") {
-			p.to = Min(p.from+*first-1, total-1)
-		}
 	}
 
 	if last != nil {
 		from := Max(p.to-*last+1, 0)
 		p.from = Max(from, p.from)
-
-		if (before == nil || *before == "") && (after == nil || *after == "") {
-			p.from = Max(total-*last, 0)
-			p.to = Max(total-1, 0)
-		}
 	}
 
 	if skip != nil {
