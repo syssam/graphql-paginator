@@ -43,8 +43,8 @@ func TestPage(t *testing.T) {
 		{&first, nil, EncodeCursor("cursor", 10), EncodeCursor("cursor", 50), 0, totalCount, 20, 11, 11, 30},
 		{nil, &last, EncodeCursor("cursor", 10), EncodeCursor("cursor", 15), 0, totalCount, 4, 11, 11, 14},
 		{nil, &last, EncodeCursor("cursor", 10), EncodeCursor("cursor", 50), 0, totalCount, 20, 30, 30, 49},
-		{nil, &last, EncodeCursor("cursor", 50), EncodeCursor("cursor", 10), 0, totalCount, 0, 51, 51, 9},
-		{&first, nil, EncodeCursor("cursor", 50), EncodeCursor("cursor", 10), 0, totalCount, 0, 51, 51, 9},
+		{nil, &last, EncodeCursor("cursor", 50), EncodeCursor("cursor", 10), 0, totalCount, 0, 0, 0, 0},
+		{&first, nil, EncodeCursor("cursor", 50), EncodeCursor("cursor", 10), 0, totalCount, 0, 0, 0, 0},
 	}
 
 	for i, test := range tests {
